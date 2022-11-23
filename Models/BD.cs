@@ -50,4 +50,23 @@ public class BD
         }
         return peli;
     }
+
+    public static Pelicula ModificarPelicula(int IdPelicula, string Nombre){
+        
+        Pelicula p = null;
+        string sql = "UPDATE Pelicula SET Nombre = @pNombre WHERE IdPelicula = @pIdPelicula ";
+        using(SqlConnection db = new SqlConnection(_connectionString)){
+            p = db.QueryFirstOrDefault<Pelicula>(sql, new { pIdPelicula = IdPelicula, @pNombre = Nombre});
+        }
+        return p;
+    }
+
+     public static void PutPelicula(int IdPelicula, Pelicula peli)
+        {
+            using(SqlConnection db = new SqlConnection(_connectionString))
+            {
+                db.Execute("UPDATE Pelicula SET Nombre = @pNombre, Foto =  @pFoto, Descripcion =  @pDescripcion, Estrellas =  @pEstrellas, FkCategoria =  @pFkCategoria WHERE IdPelicula = @pIdPelicula", 
+                new { pIdPelicula = peli.IdPelicula, pNombre = peli.Nombre, pFoto = peli.Foto, pDescripcion = peli.Descripcion, pEstrellas = peli.Estrellas, pFkCategoria = peli.FkCategoria}); 
+            }   
+        }
 }
